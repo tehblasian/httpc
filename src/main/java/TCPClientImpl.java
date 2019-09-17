@@ -9,26 +9,17 @@ public class TCPClientImpl implements TCPClient {
     private PrintWriter output;
     private BufferedReader input;
 
-    public static void main(String[] args) throws IOException {
-        TCPClient client = new TCPClientImpl();
-        String host = "www.google.com";
-        int port = 80;
+    public TCPClientImpl() {
 
-        client.connect(host, port);
-        client.send("GET / HTTP/1.1");
-        client.send("Host: " + host + ":" + port);
-        client.send("Connection: Close");
-        client.send("\n");
+    }
 
-        String response = client.read();
-        System.out.println(response);
-        client.stopConnection();
+    public TCPClientImpl(String host, int port) throws IOException {
+        this.connect(host, port);
     }
 
     @Override
     public void connect(String host, int port) throws UnknownHostException, IOException {
         this.socket = new Socket(InetAddress.getByName(host), port);
-        System.out.println("Connected: " + this.socket.isConnected());
         this.output = new PrintWriter(socket.getOutputStream(), true);
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
@@ -45,6 +36,7 @@ public class TCPClientImpl implements TCPClient {
 
     @Override
     public void send(String content) throws IOException {
+        System.out.println(content);
         this.output.println(content);
     }
 
