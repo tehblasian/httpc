@@ -10,10 +10,13 @@ import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.Spec;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import TCP.*;
 
 @Command(name = "httpc",
         version = "1.0.0",
@@ -33,7 +36,13 @@ public class Httpc {
     @Command(description = "Executes an HTTP GET request for a given url")
     public void get(@Parameters(paramLabel = "URL") String url) {
         Map<String, String> parsedHeaders = parseHeaders(this.headers);
-        // TODO: send get request using TCPClient
+
+        try {
+            TCPClient tcpClient = new TCPClientImpl(url, 80);
+        }
+        catch (IOException e) {
+            System.out.println("Error sending or reading request with TCP");
+        }
     }
 
     @Command(description = "Executes an HTTP POST request for a given url")
@@ -54,7 +63,7 @@ public class Httpc {
             throw new ParameterException(spec.commandLine(), "Either [-d] or [-f] can be used, but not both");
         }
         Map<String, String> parsedHeaders = parseHeaders(this.headers);
-        // TODO: send post request using TCPClient
+        // TODO: send post request using TCP.TCPClient
     }
 
     public static void main(String[] args) {

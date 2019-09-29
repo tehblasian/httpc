@@ -1,3 +1,7 @@
+package TCP;
+
+import TCP.TCPClient;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +22,7 @@ public class TCPClientImpl implements TCPClient {
     }
 
     @Override
-    public void connect(String host, int port) throws UnknownHostException, IOException {
+    public void connect(String host, int port) throws IOException {
         this.socket = new Socket(InetAddress.getByName(host), port);
         this.output = new PrintWriter(socket.getOutputStream(), true);
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));

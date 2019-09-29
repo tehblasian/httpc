@@ -1,3 +1,7 @@
+package http;
+
+import http.HttpMessage;
+
 public class HttpRequest extends HttpMessage {
     private String method;
     private String uri;
