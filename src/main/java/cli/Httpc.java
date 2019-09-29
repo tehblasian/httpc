@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import TCP.*;
+import http.*;
 
 @Command(name = "httpc",
         version = "1.0.0",
@@ -39,6 +40,10 @@ public class Httpc {
 
         try {
             TCPClient tcpClient = new TCPClientImpl(url, 80);
+
+            HttpRequest getRequest = new HttpGetRequest("GET", tcpClient.getUri());
+            String response = tcpClient.sendAndRead(getRequest);
+            System.out.println(response);
         }
         catch (IOException e) {
             System.out.println("Error sending or reading request with TCP");

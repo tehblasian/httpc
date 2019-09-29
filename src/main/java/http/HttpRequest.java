@@ -2,7 +2,9 @@ package http;
 
 import http.HttpMessage;
 
-public class HttpRequest extends HttpMessage {
+import java.util.List;
+
+public abstract class HttpRequest extends HttpMessage {
     private String method;
     private String uri;
 
@@ -14,6 +16,8 @@ public class HttpRequest extends HttpMessage {
 
     @Override
     protected String getStartLine() {
-        return String.format("%s %s %s\n", this.method, this.uri, this.HTTP_VERSION);
+        return String.format("%s %s %s\n", this.method.toUpperCase(), '/', this.HTTP_VERSION);
     }
+
+    public abstract List<String> getOutputLines();
 }
