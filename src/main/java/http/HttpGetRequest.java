@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HttpGetRequest extends HttpRequest {
-    private String method;
+    private static String HTTP_GET_METHOD = "GET";
+
     private String uri;
 
-    public HttpGetRequest(String method, String uri) {
-        super(method, uri);
-        this.method = method;
+    public HttpGetRequest(String uri) {
+        super(HTTP_GET_METHOD, uri);
         this.uri = uri;
     }
 
