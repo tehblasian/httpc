@@ -41,7 +41,7 @@ public class Httpc {
         try {
             TCPClient tcpClient = new TCPClientImpl(url, 80);
 
-            HttpRequest getRequest = new HttpGetRequest(tcpClient.getUri());
+            HttpRequest getRequest = new HttpGetRequest(tcpClient.getUri()).withHeaders(parsedHeaders);
             String response = tcpClient.sendAndRead(getRequest);
             System.out.println(response);
         }

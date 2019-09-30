@@ -21,7 +21,7 @@ public class HttpGetRequest extends HttpRequest {
         List<String> lines = new ArrayList<String>();
         lines.add(this.getStartLine());
         lines.add(this.getHostLine());
-
+        lines.addAll(this.getHeaders());
         return lines;
     }
 }

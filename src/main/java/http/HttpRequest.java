@@ -3,6 +3,7 @@ package http;
 import http.HttpMessage;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class HttpRequest extends HttpMessage {
     private String method;
@@ -12,6 +13,11 @@ public abstract class HttpRequest extends HttpMessage {
         super();
         this.method = method;
         this.uri = uri;
+    }
+
+    public HttpRequest withHeaders(Map<String, String> headers) {
+        this.headers = headers;
+        return this;
     }
 
     @Override
