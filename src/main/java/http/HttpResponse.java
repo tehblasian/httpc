@@ -1,4 +1,6 @@
-import java.util.Map;
+package http;
+
+import http.HttpMessage;
 
 public class HttpResponse extends HttpMessage {
     private int status;

@@ -1,9 +1,13 @@
+package http;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class HttpMessage {
     public final String HTTP_VERSION = "HTTP/1.0";
-    private Map<String, String> headers;
+    protected Map<String, String> headers;
     private String data;
 
     public HttpMessage() {
@@ -12,14 +16,10 @@ public abstract class HttpMessage {
 
     protected abstract String getStartLine();
 
-    public void addHeader(String name, String value) {
-        this.headers.put(name, value);
-    }
-
-    public String getHeaders() {
-        StringBuilder stringBuilder = new StringBuilder();
-        this.headers.forEach((name, value) -> stringBuilder.append(String.format("%s: %s\r\n", name, value)));
-        return stringBuilder.toString();
+    public List<String> getHeaders() {
+        List<String> formattedHeaders = new ArrayList<String>();
+        this.headers.forEach((name, value) -> formattedHeaders.add(String.format("%s: %s\r\n", name, value)));
+        return formattedHeaders;
     }
 
     public void setData(String data) {
