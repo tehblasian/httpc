@@ -9,6 +9,8 @@ public abstract class HttpRequest extends HttpMessage {
     private String method;
     private String uri;
 
+    protected String data;
+
     public HttpRequest(String method, String uri) {
         super();
         this.method = method;
@@ -17,6 +19,11 @@ public abstract class HttpRequest extends HttpMessage {
 
     public HttpRequest withHeaders(Map<String, String> headers) {
         this.headers = headers;
+        return this;
+    }
+
+    public HttpRequest withData(String data) {
+        this.data = data;
         return this;
     }
 

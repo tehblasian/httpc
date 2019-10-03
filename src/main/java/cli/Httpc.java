@@ -72,7 +72,7 @@ public class Httpc {
         try {
             TCPClient tcpClient = new TCPClientImpl(url, 5000);
 
-            HttpRequest postRequest = new HttpPostRequest(tcpClient.getUri()).withHeaders(parsedHeaders);
+            HttpRequest postRequest = new HttpPostRequest(tcpClient.getUri()).withHeaders(parsedHeaders).withData(data);
             String response = tcpClient.sendAndRead(postRequest);
             System.out.println(response);
         }
