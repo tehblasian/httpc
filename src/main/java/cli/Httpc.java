@@ -46,7 +46,7 @@ public class Httpc {
             System.out.println(response);
         }
         catch (IOException e) {
-            System.out.println("Error sending or reading request with TCP");
+            System.out.println("Error sending or reading get request with TCP");
         }
     }
 
@@ -68,7 +68,17 @@ public class Httpc {
             throw new ParameterException(spec.commandLine(), "Either [-d] or [-f] can be used, but not both");
         }
         Map<String, String> parsedHeaders = parseHeaders(this.headers);
-        // TODO: send post request using TCP.TCPClient
+
+        try {
+            TCPClient tcpClient = new TCPClientImpl(url, 5000);
+
+            HttpRequest postRequest = new HttpPostRequest(tcpClient.getUri()).withHeaders(parsedHeaders);
+            String response = tcpClient.sendAndRead(postRequest);
+            System.out.println(response);
+        }
+        catch (IOException e) {
+            System.out.println("Error sending or reading post request with TCP");
+        }
     }
 
     public static void main(String[] args) {
