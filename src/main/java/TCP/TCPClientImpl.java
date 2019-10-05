@@ -44,11 +44,10 @@ public class TCPClientImpl implements TCPClient {
 
     @Override
     public void send(HttpRequest httpRequest) throws IOException {
+        System.out.println(httpRequest);
         List<String> lines = httpRequest.getOutputLines();
-
         for (String line : lines) {
-            System.out.println(line);
-            this.output.write(line);
+            this.output.write(line + "\r\n");
         }
 
         this.output.flush();

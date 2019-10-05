@@ -24,14 +24,25 @@ public abstract class HttpRequest extends HttpMessage {
 
     public HttpRequest withData(String data) {
         this.data = data;
+        this.addContentLengthToHeaders();
         return this;
+    }
+
+    private void addContentLengthToHeaders() {
+        int contentLength = this.data.getBytes().length;
+        this.headers.put("Content-Length", Integer.toString(contentLength));
     }
 
     @Override
     protected String getStartLine() {
         // WILL NEED TO PARSE PATH FROM URI, THEN PASS INTO HERE WHERE '/' IS WRITTER
-        return String.format("%s %s %s\n", this.method.toUpperCase(), "/", this.HTTP_VERSION);
+        return String.format("%s %s %s", this.method.toUpperCase(), "/", this.HTTP_VERSION);
     }
 
     public abstract List<String> getOutputLines();
+
+    @Override
+    public String toString() {
+        return super.toString() + (this.data != null ? this.data : "");
+    }
 }

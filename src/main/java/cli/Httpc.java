@@ -72,11 +72,15 @@ public class Httpc {
         try {
             TCPClient tcpClient = new TCPClientImpl(url, 5000);
 
-            HttpRequest postRequest = new HttpPostRequest(tcpClient.getUri()).withHeaders(parsedHeaders).withData(data);
+            HttpRequest postRequest = new HttpPostRequest(tcpClient.getUri()).withHeaders(parsedHeaders);
+            if (data != null) {
+                postRequest.withData(data);
+            }
             String response = tcpClient.sendAndRead(postRequest);
             System.out.println(response);
         }
         catch (IOException e) {
+            System.err.println(e);
             System.out.println("Error sending or reading post request with TCP");
         }
     }
