@@ -2,10 +2,7 @@ package TCP;
 
 import TCP.TCPClient;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.*;
 import java.util.List;
 
@@ -13,7 +10,7 @@ import http.*;
 
 public class TCPClientImpl implements TCPClient {
     private Socket socket;
-    private PrintWriter output;
+    private BufferedWriter output;
     private BufferedReader input;
     private String host;
     private int port;
@@ -31,8 +28,8 @@ public class TCPClientImpl implements TCPClient {
     @Override
     public void connect(String host, int port) throws IOException {
         this.socket = new Socket(InetAddress.getByName(host), port);
-        this.output = new PrintWriter(socket.getOutputStream(), true);
-        this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.output = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream(), "UTF8"));
+        this.input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
     }
 
     @Override
@@ -51,8 +48,10 @@ public class TCPClientImpl implements TCPClient {
 
         for (String line : lines) {
             System.out.println(line);
-            this.output.println(line);
+            this.output.write(line);
         }
+
+        this.output.flush();
     }
 
     @Override

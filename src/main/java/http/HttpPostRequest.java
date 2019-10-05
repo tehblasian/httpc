@@ -1,14 +1,15 @@
 package http;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HttpGetRequest extends HttpRequest {
-    private static String HTTP_METHOD = "GET";
+public class HttpPostRequest extends HttpRequest {
+    private static String HTTP_METHOD = "POST";
 
     private String uri;
 
-    public HttpGetRequest(String uri) {
+    public HttpPostRequest(String uri) {
         super(HTTP_METHOD, uri);
         this.uri = uri;
     }
@@ -22,6 +23,12 @@ public class HttpGetRequest extends HttpRequest {
         lines.add(this.getStartLine());
         lines.add(this.getHostLine());
         lines.addAll(this.getHeaders());
+
+        if (this.data != null) {
+            lines.add("\r\n");
+            lines.add(this.data);
+        }
+
         return lines;
     }
 }

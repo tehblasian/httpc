@@ -9,6 +9,8 @@ public abstract class HttpRequest extends HttpMessage {
     private String method;
     private String uri;
 
+    protected String data;
+
     public HttpRequest(String method, String uri) {
         super();
         this.method = method;
@@ -20,9 +22,15 @@ public abstract class HttpRequest extends HttpMessage {
         return this;
     }
 
+    public HttpRequest withData(String data) {
+        this.data = data;
+        return this;
+    }
+
     @Override
     protected String getStartLine() {
-        return String.format("%s %s %s\n", this.method.toUpperCase(), '/', this.HTTP_VERSION);
+        // WILL NEED TO PARSE PATH FROM URI, THEN PASS INTO HERE WHERE '/' IS WRITTER
+        return String.format("%s %s %s\n", this.method.toUpperCase(), "/", this.HTTP_VERSION);
     }
 
     public abstract List<String> getOutputLines();
