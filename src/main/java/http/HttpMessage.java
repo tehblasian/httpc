@@ -20,14 +20,4 @@ public abstract class HttpMessage {
         this.headers.forEach((name, value) -> formattedHeaders.add(String.format("%s: %s", name, value)));
         return formattedHeaders;
     }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getStartLine() + "\r\n");
-        this.getHeaders().forEach(header -> sb.append(header + "\r\n"));
-        sb.append("\r\n");
-
-        return sb.toString();
-    }
 }

@@ -1,7 +1,5 @@
 package TCP;
 
-import TCP.TCPClient;
-
 import java.io.*;
 import java.net.*;
 import java.util.List;
@@ -44,13 +42,29 @@ public class TCPClientImpl implements TCPClient {
 
     @Override
     public void send(HttpRequest httpRequest) throws IOException {
-        System.out.println(httpRequest);
         List<String> lines = httpRequest.getOutputLines();
         for (String line : lines) {
+            System.out.println(line);
             this.output.write(line + "\r\n");
         }
 
+        File file;
+        if ((file = httpRequest.getFile()) != null) {
+            writeFileToSocket(file, this.output);
+        }
+
+        this.output.write("\r\n");
         this.output.flush();
+    }
+
+    private void writeFileToSocket(File file, BufferedWriter output) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(file);
+        int content;
+        byte[] buffer = new byte[8192];
+        while ((content = fileInputStream.read()) > 0) {
+            System.out.print((char)content);
+            output.write(content);
+        }
     }
 
     @Override

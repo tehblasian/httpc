@@ -73,15 +73,23 @@ public class Httpc {
             TCPClient tcpClient = new TCPClientImpl(url, 5000);
 
             HttpRequest postRequest = new HttpPostRequest(tcpClient.getUri()).withHeaders(parsedHeaders);
-            if (data != null) {
-                postRequest.withData(data);
-            }
+            addDataOrFileToPostRequest(postRequest, data, file);
+
             String response = tcpClient.sendAndRead(postRequest);
             System.out.println(response);
         }
         catch (IOException e) {
             System.err.println(e);
             System.out.println("Error sending or reading post request with TCP");
+        }
+    }
+
+    private void addDataOrFileToPostRequest(HttpRequest postRequest, String data, File file) {
+        if (data != null) {
+            postRequest.withData(data);
+        }
+        if (file != null) {
+            postRequest.withFile(file);
         }
     }
 

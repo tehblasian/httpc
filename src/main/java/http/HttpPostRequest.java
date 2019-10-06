@@ -23,9 +23,8 @@ public class HttpPostRequest extends HttpRequest {
         lines.add(this.getStartLine());
         lines.add(this.getHostLine());
         lines.addAll(this.getHeaders());
-
+        lines.add("\r\n");
         if (this.data != null) {
-            lines.add("\r\n");
             lines.add(this.data);
         }
 

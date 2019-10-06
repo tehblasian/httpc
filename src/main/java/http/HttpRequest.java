@@ -1,7 +1,6 @@
 package http;
 
-import http.HttpMessage;
-
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +9,7 @@ public abstract class HttpRequest extends HttpMessage {
     private String uri;
 
     protected String data;
+    protected File file;
 
     public HttpRequest(String method, String uri) {
         super();
@@ -28,9 +28,24 @@ public abstract class HttpRequest extends HttpMessage {
         return this;
     }
 
+    public File getFile() {
+        return this.file;
+    }
+
+    public HttpRequest withFile(File file) {
+        this.file = file;
+        this.addContentLengthToHeaders();
+        return this;
+    }
+
     private void addContentLengthToHeaders() {
-        int contentLength = this.data.getBytes().length;
-        this.headers.put("Content-Length", Integer.toString(contentLength));
+        long contentLength = 0;
+        if (this.data != null) {
+            contentLength = this.data.getBytes().length;
+        } else if (this.file != null) {
+            contentLength = this.file.length();
+        }
+        this.headers.put("Content-Length", Long.toString(contentLength));
     }
 
     @Override
@@ -40,9 +55,4 @@ public abstract class HttpRequest extends HttpMessage {
     }
 
     public abstract List<String> getOutputLines();
-
-    @Override
-    public String toString() {
-        return super.toString() + (this.data != null ? this.data : "");
-    }
 }
