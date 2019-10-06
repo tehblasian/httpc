@@ -1,20 +1,20 @@
 package http;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
 public abstract class HttpRequest extends HttpMessage {
     private String method;
-    private String uri;
-
+    protected URL url;
     protected String data;
     protected File file;
 
-    public HttpRequest(String method, String uri) {
+    public HttpRequest(String method, URL url) {
         super();
         this.method = method;
-        this.uri = uri;
+        this.url = url;
     }
 
     public HttpRequest withHeaders(Map<String, String> headers) {
@@ -50,8 +50,11 @@ public abstract class HttpRequest extends HttpMessage {
 
     @Override
     protected String getStartLine() {
-        // WILL NEED TO PARSE PATH FROM URI, THEN PASS INTO HERE WHERE '/' IS WRITTER
-        return String.format("%s %s %s", this.method.toUpperCase(), "/", this.HTTP_VERSION);
+        return String.format("%s %s %s", this.method.toUpperCase(), getRequestPathWithQueryParams(), this.HTTP_VERSION);
+    }
+
+    private String getRequestPathWithQueryParams() {
+        return this.url.getPath() + (this.url.getQuery() != null ? "?" + this.url.getQuery() : "");
     }
 
     public abstract List<String> getOutputLines();

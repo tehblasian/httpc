@@ -3,6 +3,8 @@ package http;
 import org.junit.Test;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -12,8 +14,8 @@ import static org.mockito.Mockito.when;
 public class HttpRequestTest {
 
     @Test
-    public void withData_contentLengthHeaderIsAdded() {
-        HttpRequest request = new HttpRequest("", "") {
+    public void withData_contentLengthHeaderIsAdded() throws MalformedURLException {
+        HttpRequest request = new HttpRequest("", new URL("http://test.com")) {
             @Override
             public List<String> getOutputLines() {
                 return null;
@@ -25,8 +27,8 @@ public class HttpRequestTest {
     }
 
     @Test
-    public void withData_correctContentLengthIsAdded() {
-        HttpRequest request = new HttpRequest("", "") {
+    public void withData_correctContentLengthIsAdded() throws MalformedURLException {
+        HttpRequest request = new HttpRequest("", new URL("http://test.com")) {
             @Override
             public List<String> getOutputLines() {
                 return null;
@@ -39,8 +41,8 @@ public class HttpRequestTest {
     }
 
     @Test
-    public void withFile_contentLengthHeaderIsAdded() {
-        HttpRequest request = new HttpRequest("", "") {
+    public void withFile_contentLengthHeaderIsAdded() throws MalformedURLException {
+        HttpRequest request = new HttpRequest("", new URL("http://test.com")) {
             @Override
             public List<String> getOutputLines() {
                 return null;
@@ -54,8 +56,8 @@ public class HttpRequestTest {
     }
 
     @Test
-    public void withFile_correctContentLengthIsAdded() {
-        HttpRequest request = new HttpRequest("", "") {
+    public void withFile_correctContentLengthIsAdded() throws MalformedURLException {
+        HttpRequest request = new HttpRequest("", new URL("http://test.com")) {
             @Override
             public List<String> getOutputLines() {
                 return null;

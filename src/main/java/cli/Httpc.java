@@ -11,9 +11,8 @@ import picocli.CommandLine.Spec;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.net.URL;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import TCP.*;
@@ -35,9 +34,10 @@ public class Httpc {
     ) {
         Map<String, String> parsedHeaders = parseHeaders(headers);
         try {
-            TCPClient tcpClient = new TCPClientImpl(url, 80);
+            URL u = new URL(url);
+            TCPClient tcpClient = new TCPClientImpl(u.getHost(), 80);
 
-            HttpRequest getRequest = new HttpGetRequest(tcpClient.getUri()).withHeaders(parsedHeaders);
+            HttpRequest getRequest = new HttpGetRequest(u).withHeaders(parsedHeaders);
             String response = tcpClient.sendAndRead(getRequest);
             if (verbose) {
                 System.out.println(response);
@@ -71,9 +71,9 @@ public class Httpc {
         Map<String, String> parsedHeaders = parseHeaders(headers);
 
         try {
-            TCPClient tcpClient = new TCPClientImpl(url, 5000);
-
-            HttpRequest postRequest = new HttpPostRequest(tcpClient.getUri()).withHeaders(parsedHeaders);
+            URL u = new URL(url);
+            TCPClient tcpClient = new TCPClientImpl(u.getHost(), 80);
+            HttpRequest postRequest = new HttpPostRequest(u).withHeaders(parsedHeaders);
             addDataOrFileToPostRequest(postRequest, data, file);
 
             String response = tcpClient.sendAndRead(postRequest);
@@ -103,7 +103,7 @@ public class Httpc {
 
     protected Map<String, String> parseHeaders(List<String> headers) {
         if (headers == null) {
-            return null;
+            return new HashMap<>();
         }
         validateHeaders(headers);
         return headers

@@ -2,6 +2,8 @@ package http;
 
 import org.junit.Test;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -9,8 +11,8 @@ import static org.junit.Assert.*;
 public class HttpMessageTest {
 
     @Test
-    public void testGetHeaders_formatsAllHeaders() {
-        HttpMessage request = new HttpRequest("", "") {
+    public void testGetHeaders_formatsAllHeaders() throws MalformedURLException {
+        HttpMessage request = new HttpRequest("", new URL("http://test.com")) {
             @Override
             public List<String> getOutputLines() {
                 return null;
@@ -25,8 +27,8 @@ public class HttpMessageTest {
     }
 
     @Test
-    public void testGetHeaders_correctlyFormatsHeaders() {
-        HttpMessage request = new HttpRequest("", "") {
+    public void testGetHeaders_correctlyFormatsHeaders() throws MalformedURLException {
+        HttpMessage request = new HttpRequest("", new URL("http://test.com")) {
             @Override
             public List<String> getOutputLines() {
                 return null;
