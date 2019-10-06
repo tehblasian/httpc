@@ -102,6 +102,9 @@ public class Httpc {
     }
 
     protected Map<String, String> parseHeaders(List<String> headers) {
+        if (headers == null) {
+            return null;
+        }
         validateHeaders(headers);
         return headers
                 .stream().
