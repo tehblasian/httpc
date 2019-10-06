@@ -44,7 +44,6 @@ public class TCPClientImpl implements TCPClient {
     public void send(HttpRequest httpRequest) throws IOException {
         List<String> lines = httpRequest.getOutputLines();
         for (String line : lines) {
-            System.out.println(line);
             this.output.write(line + "\r\n");
         }
 
@@ -62,7 +61,6 @@ public class TCPClientImpl implements TCPClient {
         int content;
         byte[] buffer = new byte[8192];
         while ((content = fileInputStream.read()) > 0) {
-            System.out.print((char)content);
             output.write(content);
         }
     }

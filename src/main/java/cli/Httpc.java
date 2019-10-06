@@ -27,23 +27,21 @@ public class Httpc {
     @Spec
     private CommandSpec spec;
 
-    @Option(names = "-h", description = "Associates headers to the HTTP request with the format 'key:value'.", paramLabel = "key:value")
-    private List<String> headers;
-
-    public Httpc() {
-        this.headers = new ArrayList<>();
-    }
-
     @Command(description = "Executes an HTTP GET request for a given url")
-    public void get(@Parameters(paramLabel = "URL") String url) {
-        Map<String, String> parsedHeaders = parseHeaders(this.headers);
-
+    public void get(
+            @Parameters(paramLabel = "URL") String url,
+            @Option(names = { "-v", "--verbose" }, description = "Prints the response details") boolean verbose,
+            @Option(names = "-h", description = "Associates headers to the HTTP request with the format 'key:value'.", paramLabel = "key:value") List<String> headers
+    ) {
+        Map<String, String> parsedHeaders = parseHeaders(headers);
         try {
             TCPClient tcpClient = new TCPClientImpl(url, 80);
 
             HttpRequest getRequest = new HttpGetRequest(tcpClient.getUri()).withHeaders(parsedHeaders);
             String response = tcpClient.sendAndRead(getRequest);
-            System.out.println(response);
+            if (verbose) {
+                System.out.println(response);
+            }
         }
         catch (IOException e) {
             System.out.println("Error sending or reading get request with TCP");
@@ -62,12 +60,15 @@ public class Httpc {
                     names = { "-d", "--data" },
                     paramLabel = "DATA",
                     description = "Associates inline data with the body of the HTTP POST request"
-            ) String data
+            ) String data,
+            @Option(names = { "-v", "--verbose" }, description = "Prints the response details")
+            boolean verbose,
+            @Option(names = "-h", description = "Associates headers to the HTTP request with the format 'key:value'.", paramLabel = "key:value") List<String> headers
     ) {
         if (file != null && data != null) {
             throw new ParameterException(spec.commandLine(), "Either [-d] or [-f] can be used, but not both");
         }
-        Map<String, String> parsedHeaders = parseHeaders(this.headers);
+        Map<String, String> parsedHeaders = parseHeaders(headers);
 
         try {
             TCPClient tcpClient = new TCPClientImpl(url, 5000);
@@ -76,7 +77,9 @@ public class Httpc {
             addDataOrFileToPostRequest(postRequest, data, file);
 
             String response = tcpClient.sendAndRead(postRequest);
-            System.out.println(response);
+            if (verbose) {
+                System.out.println(response);
+            }
         }
         catch (IOException e) {
             System.err.println(e);

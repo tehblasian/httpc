@@ -1,7 +1,5 @@
 package TCP;
 
-import TCP.TCPClient;
-import TCP.TCPClientImpl;
 import http.HttpRequest;
 
 import org.junit.Test;
