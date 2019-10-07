@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import TCP.*;
 import http.*;
 
 @Command(name = "httpc",
@@ -26,6 +25,12 @@ public class Httpc {
     @Spec
     private CommandSpec spec;
 
+    private HttpClient httpClient;
+
+    public Httpc() {
+        this.httpClient = new HttpClientImpl();
+    }
+
     @Command(description = "Executes an HTTP GET request for a given url")
     public void get(
             @Parameters(paramLabel = "URL") String url,
@@ -35,16 +40,14 @@ public class Httpc {
         Map<String, String> parsedHeaders = parseHeaders(headers);
         try {
             URL u = new URL(url);
-            TCPClient tcpClient = new TCPClientImpl(u.getHost(), 80);
-
             HttpRequest getRequest = new HttpGetRequest(u).withHeaders(parsedHeaders);
-            String response = tcpClient.sendAndRead(getRequest);
+            HttpResponse response = httpClient.send(getRequest);
             if (verbose) {
                 System.out.println(response);
             }
         }
         catch (IOException e) {
-            System.out.println("Error sending or reading get request with TCP");
+            System.out.println("Error sending or reading GET request");
         }
     }
 
@@ -69,21 +72,18 @@ public class Httpc {
             throw new ParameterException(spec.commandLine(), "Either [-d] or [-f] can be used, but not both");
         }
         Map<String, String> parsedHeaders = parseHeaders(headers);
-
         try {
             URL u = new URL(url);
-            TCPClient tcpClient = new TCPClientImpl(u.getHost(), 80);
             HttpRequest postRequest = new HttpPostRequest(u).withHeaders(parsedHeaders);
             addDataOrFileToPostRequest(postRequest, data, file);
-
-            String response = tcpClient.sendAndRead(postRequest);
+            HttpResponse response = httpClient.send(postRequest);
             if (verbose) {
                 System.out.println(response);
             }
         }
         catch (IOException e) {
             System.err.println(e);
-            System.out.println("Error sending or reading post request with TCP");
+            System.out.println("Error sending or reading POST request");
         }
     }
 
