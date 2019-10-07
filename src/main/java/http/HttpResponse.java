@@ -32,6 +32,10 @@ public class HttpResponse extends HttpMessage {
         return response;
     }
 
+    public int getStatus() {
+        return this.status;
+    }
+
     private static void addStatusAndReasonPhraseToResponseFromRaw(String raw, HttpResponse response) {
         Pattern startLineRegex = Pattern.compile("^(HTTP\\/\\d.\\d)\\s(\\d+)\\s(\\w+)$");
         String startLine = raw.split("\n")[0];

@@ -20,4 +20,8 @@ public abstract class HttpMessage {
         this.headers.forEach((name, value) -> formattedHeaders.add(String.format("%s: %s", name, value)));
         return formattedHeaders;
     }
+
+    public Map<String, String> getHeadersMap() {
+        return this.headers;
+    }
 }

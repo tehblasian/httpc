@@ -45,6 +45,23 @@ public class Httpc {
             if (verbose) {
                 System.out.println(response);
             }
+
+            if (response.getStatus() == 302 || response.getStatus() == 301) {
+                String redirectUrl = response.getHeadersMap().get("Location").trim();
+                if (redirectUrl != null) {
+                    if (verbose) {
+                        System.out.println("Redirecting Response");
+                    }
+
+                    if (!redirectUrl.startsWith("http://")) {
+                        redirectUrl = "http://" + redirectUrl;
+                    }
+
+                    this.get(redirectUrl, verbose, headers);
+                } else {
+                    System.out.println("Invalid Redirect Attempt From Response");
+                }
+            }
         }
         catch (IOException e) {
             System.out.println("Error sending or reading GET request");
