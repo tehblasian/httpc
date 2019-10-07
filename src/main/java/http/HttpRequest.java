@@ -54,7 +54,7 @@ public abstract class HttpRequest extends HttpMessage {
     }
 
     private String getRequestPathWithQueryParams() {
-        return this.url.getPath() + (this.url.getQuery() != null ? "?" + this.url.getQuery() : "");
+        return (this.url.getPath().isEmpty() ? this.url.getPath() : "/") + (this.url.getQuery() != null ? "?" + this.url.getQuery() : "");
     }
 
     public abstract List<String> getOutputLines();

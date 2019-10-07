@@ -37,7 +37,7 @@ public class HttpResponse extends HttpMessage {
     }
 
     private static void addStatusAndReasonPhraseToResponseFromRaw(String raw, HttpResponse response) {
-        Pattern startLineRegex = Pattern.compile("^(HTTP\\/\\d.\\d)\\s(\\d+)\\s(\\w+)$");
+        Pattern startLineRegex = Pattern.compile("^(HTTP\\/\\d.\\d)\\s(\\d+)\\s((\\w+\\s?)*)$");
         String startLine = raw.split("\n")[0];
         Matcher matcher = startLineRegex.matcher(startLine);
         if (matcher.find()) {

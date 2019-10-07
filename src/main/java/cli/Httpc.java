@@ -56,7 +56,7 @@ public class Httpc {
                     if (!redirectUrl.startsWith("http://")) {
                         redirectUrl = "http://" + redirectUrl;
                     }
-
+                    System.out.println(redirectUrl);
                     this.get(redirectUrl, verbose, headers);
                 } else {
                     System.out.println("Invalid Redirect Attempt From Response");
